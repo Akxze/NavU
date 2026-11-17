@@ -83,12 +83,6 @@ NavU/
 
 The project depends on the packages listed in `requirements.txt`.
 
-## Important Notes
-
-- Do not upload API keys or private credentials
-- Keep `.env` files out of the repository
-- Make sure secret configuration is not committed to GitHub
-
 ## License
 
 This project is licensed under the MIT License.
