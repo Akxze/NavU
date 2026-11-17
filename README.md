@@ -1,5 +1,6 @@
 # NavU
 
+Large File Size 246 MB
 NavU is a navigation app designed for students who are struggling to find their way around the National University City campus. The app helps users locate rooms, buildings, and key destinations more easily.
 
 ## Overview
