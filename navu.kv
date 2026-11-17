@@ -1,7 +1,14 @@
 #:kivy 2.0
+#:import theme navu.theme
 
 MDScreenManager:
     id: screen_manager
+    canvas.before:
+        Color:
+            rgba: theme.NAVY_900
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     HomeScreen:
     CampusScreen:

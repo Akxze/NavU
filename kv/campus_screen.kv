@@ -1,0 +1,187 @@
+#:kivy 2.0
+#:import theme navu.theme
+
+<CampusScreen>:
+    name: "campus"
+    md_bg_color: theme.NAVY_900
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: ["16dp", "20dp", "20dp", "14dp"]
+        spacing: "10dp"
+
+        canvas.before:
+            Color:
+                rgba: theme.NAVY_800
+            RoundedRectangle:
+                pos: self.x + dp(6), self.y + dp(6)
+                size: self.width - dp(12), self.height - dp(12)
+                radius: [32, 32, 32, 32]
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: None, None
+            width: self.parent.width - dp(36)
+            height: "48dp"
+            spacing: "6dp"
+
+            NavButton:
+                style: "text"
+                theme_bg_color: "Custom"
+                size_hint: None, None
+                size: "42dp", "42dp"
+                on_release: app.switch_screen("home")
+
+                MDButtonText:
+                    text: "‹"
+                    font_size: "34sp"
+                    theme_text_color: "Custom"
+                    text_color: theme.WHITE
+
+            MDLabel:
+                text: "Hello, [color=#EEC94F][b]Nationalian![/b][/color]"
+                font_style: "Title"
+                role: "large"
+                theme_font_size: "Custom"
+                font_size: "25sp"
+                markup: True
+                adaptive_height: True
+                halign: "left"
+                theme_text_color: "Custom"
+                text_color: theme.WHITE
+
+        MDLabel:
+            size_hint_x: None
+            width: self.parent.width - dp(36)
+            text: "Choose your campus:"
+            font_style: "Body"
+            role: "small"
+            theme_font_size: "Custom"
+            font_size: "18sp"
+            adaptive_height: True
+            bold: True
+            theme_text_color: "Custom"
+            text_color: theme.GOLD_300
+
+        FloatLayout:
+            id: campus_search_bar
+            size_hint: None, None
+            width: self.parent.width - dp(36)
+            height: "56dp"
+
+            canvas.before:
+                Color:
+                    rgba: theme.alpha(theme.GOLD_300, root.search_focus_progress * 0.22)
+                RoundedRectangle:
+                    pos: self.x - dp(4) * root.search_focus_progress, self.y - dp(4) * root.search_focus_progress
+                    size: self.width + dp(8) * root.search_focus_progress, self.height + dp(8) * root.search_focus_progress
+                    radius: [34, 34, 34, 34]
+                Color:
+                    rgba: theme.NAVY_900
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [30, 30, 30, 30]
+                Color:
+                    rgba: theme.GOLD_500
+                RoundedRectangle:
+                    pos: self.x + dp(1), self.y + dp(1)
+                    size: self.width - dp(2), self.height - dp(2)
+                    radius: [29, 29, 29, 29]
+
+            MDIcon:
+                id: search_icon
+                icon: "magnify"
+                theme_icon_color: "Custom"
+                icon_color: theme.NAVY_900
+                size_hint: None, None
+                size: "24dp", "24dp"
+                pos_hint: {"x": 0.045, "center_y": 0.5}
+                canvas.before:
+                    PushMatrix
+                    Rotate:
+                        angle: root.search_icon_angle
+                        origin: self.center
+                    Scale:
+                        x: root.search_icon_scale
+                        y: root.search_icon_scale
+                        z: 1
+                        origin: self.center
+                canvas.after:
+                    PopMatrix
+
+            TextInput:
+                id: search_input
+                size_hint: 0.70, None
+                height: "42dp"
+                pos_hint: {"x": 0.13, "center_y": 0.5}
+                font_size: "14sp"
+                foreground_color: theme.NAVY_900
+                hint_text_color: theme.alpha(theme.NAVY_900, 0.65)
+                cursor_color: theme.NAVY_900
+                selection_color: theme.alpha(theme.NAVY_900, 0.18)
+                background_normal: ""
+                background_active: ""
+                background_color: 0, 0, 0, 0
+                padding: ["0dp", "10dp", "0dp", "10dp"]
+                multiline: False
+                hint_text: "Search for your Campus"
+
+            FloatLayout:
+                size_hint: None, None
+                size: "38dp", "38dp"
+                pos_hint: {"right": 0.98, "center_y": 0.5}
+
+                Image:
+                    id: campus_logo
+                    source: root.logo_source
+                    fit_mode: "contain"
+                    size_hint: None, None
+                    size: "36dp", "36dp"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDScrollView:
+            size_hint: None, 1
+            width: self.parent.width - dp(36)
+            do_scroll_x: False
+            MDGridLayout:
+                id: campus_grid
+                cols: 2
+                spacing: ["12dp", "12dp"]
+                padding: ["0dp", "14dp", "0dp", "12dp"]
+                adaptive_height: True
+
+                CampusCard:
+                    campus_key: "fairview"
+                    campus_name: "NU FAIRVIEW"
+                    subtitle: ""
+                    on_release: app.select_campus("NU Fairview", False, self)
+
+                CampusCard:
+                    campus_key: "manila"
+                    campus_name: "NU MANILA"
+                    subtitle: ""
+                    on_release: app.select_campus("NU Main (Sampaloc)", True, self)
+                CampusCard:
+                    campus_key: "moa"
+                    campus_name: "NU MOA"
+                    subtitle: ""
+                    on_release: app.select_campus("NU MOA", True, self)
+
+                CampusCard:
+                    campus_key: "lipa"
+                    campus_name: "NU LIPA"
+                    subtitle: ""
+                    on_release: app.select_campus("NU Lipa", True, self)
+
+                CampusCard:
+                    campus_key: "baliwag"
+                    campus_name: "NU BALIWAG"
+                    subtitle: ""
+                    on_release: app.select_campus("NU Baliwag", True, self)
+
+                CampusCard:
+                    campus_key: "laguna"
+                    campus_name: "NU LAGUNA"
+                    subtitle: ""
+                    on_release: app.select_campus("NU Laguna", True, self)

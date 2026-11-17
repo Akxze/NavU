@@ -1,0 +1,619 @@
+#:kivy 2.0
+#:import theme navu.theme
+
+<RouteMap>:
+    Image:
+        id: floorplan_image
+        source: ""
+        fit_mode: "contain"
+        size_hint: None, None
+        opacity: 1 if root.floorplan_source else 0
+
+    MDLabel:
+        text: "Floor plan unavailable for this level" if not root.floorplan_source else ""
+        halign: "center"
+        valign: "middle"
+        theme_text_color: "Custom"
+        text_color: theme.INK_SOFT
+        font_style: "Body"
+        role: "small"
+        size_hint: 1, 1
+        opacity: 1 if not root.floorplan_source else 0
+
+
+<RouteScreen>:
+    name: "route"
+    md_bg_color: theme.WHITE
+
+    FloatLayout:
+        # The map remains full-screen; controls and the sheet float above it.
+
+        # Central Middle Area: Map Routing in the Middle
+        FloatLayout:
+            size_hint: (1, 1)
+            pos_hint: {"x": 0, "y": 0}
+
+            RouteMap:
+                id: route_map
+                pos_hint: {"x": 0, "y": 0}
+                size_hint: (1, 1)
+
+            # Floating Floor Selector
+            MDCard:
+                id: floor_selector_panel
+                style: "elevated"
+                size_hint: (None, None)
+                width: "52dp"
+                height: "230dp"
+                pos_hint: {"x": 0.03, "center_y": 0.52}
+                padding: "4dp"
+                radius: [20, 20, 20, 20]
+                elevation: 3
+                theme_bg_color: "Custom"
+                md_bg_color: theme.NAVY_900
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "3dp"
+
+                    MDLabel:
+                        text: "FLOOR"
+                        size_hint_y: None
+                        height: "18dp"
+                        font_style: "Label"
+                        role: "small"
+                        bold: True
+                        halign: "center"
+                        theme_text_color: "Custom"
+                        text_color: theme.GOLD_300
+
+                    # Lower Ground (LG)
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "LG" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("LG")
+                        MDButtonText:
+                            text: "LG"
+                            bold: True
+                            font_size: "11sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "LG" else theme.WHITE
+
+                    # 1F
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "1" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("1")
+                        MDButtonText:
+                            text: "1F"
+                            bold: True
+                            font_size: "12sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "1" else theme.WHITE
+
+                    # 2F
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "2" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("2")
+                        MDButtonText:
+                            text: "2F"
+                            bold: True
+                            font_size: "12sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "2" else theme.WHITE
+
+                    # 3F
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "3" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("3")
+                        MDButtonText:
+                            text: "3F"
+                            bold: True
+                            font_size: "12sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "3" else theme.WHITE
+
+                    # 4F
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "4" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("4")
+                        MDButtonText:
+                            text: "4F"
+                            bold: True
+                            font_size: "12sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "4" else theme.WHITE
+
+                    # 5F
+                    NavButton:
+                        style: "text"
+                        size_hint: (1, None)
+                        height: "29dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500 if root.current_floor == "5" else theme.NAVY_900
+                        radius: [16, 16, 16, 16]
+                        on_release: root.select_floor("5")
+                        MDButtonText:
+                            text: "5F"
+                            bold: True
+                            font_size: "12sp"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900 if root.current_floor == "5" else theme.WHITE
+
+            # Floating Re-center / Location Button
+            NavButton:
+                id: center_map_button
+                style: "filled"
+                size_hint: (None, None)
+                size: ("82dp", "44dp")
+                pos_hint: {"right": 0.97}
+                y: root.sheet_height + dp(22)
+                theme_bg_color: "Custom"
+                md_bg_color: theme.WHITE
+                radius: [22, 22, 22, 22]
+                on_release: root.recenter_to_user()
+
+                MDButtonIcon:
+                    icon: theme.ICON["recenter"]
+                    theme_text_color: "Custom"
+                    text_color: theme.NAVY_800
+
+                MDButtonText:
+                    text: "Center"
+                    font_size: "12sp"
+                    bold: True
+                    theme_text_color: "Custom"
+                    text_color: theme.NAVY_900
+
+            MDCard:
+                id: map_selection_hint
+                size_hint: (None, None)
+                size: ("188dp", "44dp")
+                pos_hint: {"right": 0.97, "top": 0.84}
+                padding: ["8dp", "4dp"]
+                radius: [14, 14, 14, 14]
+                elevation: 2
+                theme_bg_color: "Custom"
+                md_bg_color: theme.WHITE
+                opacity: 1 if not root.navigating else 0
+
+                MDLabel:
+                    text: root.gps_status if root.map_has_plan else root.floor_label + " plan unavailable"
+                    font_style: "Label"
+                    role: "small"
+                    bold: True
+                    halign: "center"
+                    valign: "middle"
+                    max_lines: 2
+                    theme_text_color: "Custom"
+                    text_color: theme.NAVY_900
+
+        # Floating destination bar
+        MDCard:
+            id: top_navigation_bar
+            size_hint: (0.94, None)
+            height: "68dp"
+            pos_hint: {"center_x": 0.5, "top": 0.98}
+            padding: ["12dp", "8dp"]
+            radius: [20, 20, 20, 20]
+            elevation: 6
+            theme_bg_color: "Custom"
+            md_bg_color: theme.NAVY_900
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                spacing: "10dp"
+
+                MDIconButton:
+                    id: back_button
+                    size_hint: (None, None)
+                    size: ("40dp", "40dp")
+                    pos_hint: {"center_y": 0.5}
+                    icon: "arrow-left"
+                    style: "filled"
+                    theme_bg_color: "Custom"
+                    md_bg_color: theme.NAVY_800
+                    theme_icon_color: "Custom"
+                    icon_color: theme.GOLD_300
+                    on_release: root.go_back()
+
+                MDIcon:
+                    icon: theme.ICON["start"]
+                    size_hint: (None, None)
+                    size: ("28dp", "28dp")
+                    pos_hint: {"center_y": 0.5}
+                    theme_text_color: "Custom"
+                    text_color: theme.GOLD_400
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "1dp"
+                    pos_hint: {"center_y": 0.5}
+
+                    MDLabel:
+                        text: "ARRIVED AT" if root.arrived else ("NAVIGATING TO" if root.navigating else "ROUTE TO")
+                        font_style: "Label"
+                        role: "small"
+                        bold: True
+                        adaptive_height: True
+                        theme_text_color: "Custom"
+                        text_color: theme.GOLD_300
+
+                    MDLabel:
+                        text: root.room_name or "Choose a destination"
+                        font_style: "Title"
+                        role: "medium"
+                        bold: True
+                        adaptive_height: True
+                        max_lines: 1
+                        theme_text_color: "Custom"
+                        text_color: theme.WHITE
+
+                NavButton:
+                    style: "filled"
+                    size_hint: (None, None)
+                    size: ("82dp", "44dp")
+                    pos_hint: {"center_y": 0.5}
+                    theme_bg_color: "Custom"
+                    md_bg_color: theme.GOLD_500
+                    radius: [22, 22, 22, 22]
+                    on_release: root.open_search()
+
+                    MDButtonIcon:
+                        icon: theme.ICON["search"]
+                        theme_text_color: "Custom"
+                        text_color: theme.NAVY_900
+
+                    MDButtonText:
+                        text: "Search"
+                        bold: True
+                        font_size: "12sp"
+                        theme_text_color: "Custom"
+                        text_color: theme.NAVY_900
+
+        # Route guidance card
+        NavButton:
+            id: metrics_focus_button
+            size_hint: (None, None)
+            size: ("142dp", "38dp")
+            pos_hint: {"x": dp(78) / max(1, root.width), "y": (root.sheet_height + dp(16)) / max(1, root.height)}
+            opacity: 1 if root.sheet_state == "peek" else 0
+            disabled: root.sheet_state != "peek"
+            theme_bg_color: "Custom"
+            md_bg_color: theme.NAVY_900
+            line_color: theme.GOLD_500
+            radius: [19, 19, 19, 19]
+            on_release: root.set_sheet_state("full")
+
+            MDButtonText:
+                text: "Collapse Map View"
+                font_size: "11sp"
+                bold: True
+                theme_text_color: "Custom"
+                text_color: theme.GOLD_300
+
+        NavigationSheetCard:
+            id: navigation_sheet
+            drag_callback: root.set_destination_sheet_expanded
+            drag_update_callback: root.update_destination_sheet_drag
+            style: "elevated"
+            size_hint_x: 1 - dp(78) / max(1, root.width)
+            size_hint_y: None
+            height: root.sheet_height if root.sheet_height else "300dp"
+            pos_hint: {"x": dp(70) / max(1, root.width), "y": dp(10) / max(1, root.height)}
+            padding: ["14dp", "8dp", "14dp", "10dp"]
+            radius: [22, 22, 22, 22]
+            elevation: 7
+            theme_bg_color: "Custom"
+            md_bg_color: theme.WHITE
+
+            MDBoxLayout:
+                id: navigation_sheet_content
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(7) if root.sheet_state != "peek" else 0
+
+                RouteSheetHandle:
+                    size_hint: (1, None)
+                    height: "14dp"
+                    drag_callback: root.set_destination_sheet_expanded
+                    drag_update_callback: root.update_destination_sheet_drag
+                    expanded: root.sheet_state != "peek"
+                    canvas:
+                        Color:
+                            rgba: theme.LINE
+                        RoundedRectangle:
+                            pos: (self.center_x - dp(18), self.center_y - dp(2))
+                            size: (dp(36), dp(4))
+                            radius: [2, 2, 2, 2]
+
+                MDBoxLayout:
+                    id: destination_title_row
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: max(dp(34), destination_title.height) if root.sheet_state != "peek" else 0
+                    opacity: 1 if root.sheet_state != "peek" else 0
+                    spacing: "8dp"
+
+                    MDLabel:
+                        id: destination_title
+                        text: root.room_name or "Choose a destination"
+                        font_style: "Title"
+                        role: "large"
+                        font_size: "21sp"
+                        bold: True
+                        size_hint_y: None
+                        height: self.texture_size[1] + dp(8)
+                        text_size: (self.width - dp(12), None)
+                        max_lines: 2
+                        halign: "left"
+                        valign: "middle"
+                        padding: ["6dp", "4dp"]
+                        theme_text_color: "Custom"
+                        text_color: theme.NAVY_900
+
+                    MDCard:
+                        size_hint: (None, None)
+                        size: ("54dp", "28dp")
+                        pos_hint: {"center_y": 0.5}
+                        padding: ["4dp", "2dp"]
+                        radius: [14, 14, 14, 14]
+                        elevation: 0
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500
+
+                        MDLabel:
+                            text: "[ " + root.room_floor_display + " ]"
+                            font_style: "Label"
+                            role: "small"
+                            bold: True
+                            halign: "center"
+                            valign: "middle"
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900
+
+                MDLabel:
+                    text: ("Next: " + root.maneuver_title + " · " + root.maneuver_instruction) if root.has_route else root.maneuver_instruction
+                    size_hint_y: None
+                    height: "20dp" if root.sheet_state != "peek" else 0
+                    opacity: 1 if root.sheet_state != "peek" else 0
+                    font_style: "Body"
+                    role: "small"
+                    max_lines: 1
+                    theme_text_color: "Custom"
+                    text_color: theme.INK_SOFT
+
+                NavButton:
+                    id: jump_to_next_floor_button
+                    size_hint: (1, None)
+                    height: "38dp" if root.next_floor_visible and root.sheet_state != "peek" else 0
+                    opacity: 1 if root.next_floor_visible and root.sheet_state != "peek" else 0
+                    disabled: not root.next_floor_visible or root.sheet_state == "peek"
+                    theme_bg_color: "Custom"
+                    md_bg_color: theme.PAPER
+                    line_color: theme.alpha(theme.GOLD_500, 0.7)
+                    radius: [19, 19, 19, 19]
+                    on_release: root.jump_to_next_floor()
+
+                    MDButtonIcon:
+                        icon: root.next_floor_icon
+                        theme_text_color: "Custom"
+                        text_color: theme.NAVY_800
+
+                    MDButtonText:
+                        text: root.next_floor_label
+                        font_size: "12sp"
+                        bold: True
+                        theme_text_color: "Custom"
+                        text_color: theme.NAVY_800
+
+                Image:
+                    source: root.room_photo_source
+                    fit_mode: "contain"
+                    size_hint_y: None
+                    height: min(root.height * 0.34, dp(240)) if root.sheet_state == "full" and root.room_photo_source else 0
+                    opacity: 1 if root.sheet_state == "full" and root.room_photo_source else 0
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: "62dp" if root.sheet_state != "peek" else 0
+                    opacity: 1 if root.sheet_state != "peek" else 0
+                    spacing: "6dp"
+
+                    MDCard:
+                        size_hint_x: 1
+                        padding: ["4dp", "5dp"]
+                        radius: [12, 12, 12, 12]
+                        elevation: 0
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.PAPER
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "2dp"
+
+                            MDLabel:
+                                text: "ETA"
+                                font_style: "Label"
+                                role: "small"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.GOLD_700
+
+                            MDLabel:
+                                text: root.arrival_clock
+                                font_style: "Body"
+                                role: "small"
+                                font_size: "11sp"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.NAVY_900
+
+                    MDCard:
+                        size_hint_x: 1
+                        padding: ["4dp", "5dp"]
+                        radius: [12, 12, 12, 12]
+                        elevation: 0
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.PAPER
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "2dp"
+
+                            MDLabel:
+                                text: "TIME"
+                                font_style: "Label"
+                                role: "small"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.GOLD_700
+
+                            MDLabel:
+                                text: "Arrived" if root.arrived else (root.remaining_time + " walk" if root.has_route else "--")
+                                font_style: "Body"
+                                role: "small"
+                                font_size: "10sp"
+                                bold: True
+                                adaptive_height: True
+                                max_lines: 1
+                                theme_text_color: "Custom"
+                                text_color: theme.NAVY_900
+
+                    MDCard:
+                        size_hint_x: 1
+                        padding: ["4dp", "5dp"]
+                        radius: [12, 12, 12, 12]
+                        elevation: 0
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.PAPER
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "2dp"
+
+                            MDLabel:
+                                text: "DISTANCE"
+                                font_style: "Label"
+                                role: "small"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.GOLD_700
+
+                            MDLabel:
+                                text: root.remaining_distance
+                                font_style: "Body"
+                                role: "small"
+                                font_size: "11sp"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.NAVY_900
+
+                    MDCard:
+                        size_hint_x: 1
+                        padding: ["4dp", "5dp"]
+                        radius: [12, 12, 12, 12]
+                        elevation: 0
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.PAPER
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "2dp"
+
+                            MDLabel:
+                                text: "LIVE CLOCK"
+                                font_style: "Label"
+                                role: "small"
+                                bold: True
+                                adaptive_height: True
+                                theme_text_color: "Custom"
+                                text_color: theme.GOLD_700
+
+                            MDLabel:
+                                text: root.live_clock
+                                font_style: "Body"
+                                role: "small"
+                                font_size: "9sp"
+                                bold: True
+                                adaptive_height: True
+                                max_lines: 1
+                                theme_text_color: "Custom"
+                                text_color: theme.NAVY_900
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    spacing: "8dp"
+                    size_hint_y: None
+                    height: "46dp" if root.sheet_state != "peek" else 0
+                    opacity: 1 if root.sheet_state != "peek" else 0
+
+                    NavButton:
+                        style: "filled"
+                        size_hint_x: 0.58
+                        disabled: not root.start_node
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.GOLD_500
+                        radius: [23, 23, 23, 23]
+                        on_release: root.toggle_walk_simulation()
+
+                        MDButtonIcon:
+                            icon: "pause" if root.tracking_walk else theme.ICON["start"]
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900
+
+                        MDButtonText:
+                            text: "Pause Walk" if root.tracking_walk else "Start Walk"
+                            bold: True
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_900
+
+                    NavButton:
+                        style: "outlined"
+                        size_hint_x: 0.42
+                        theme_bg_color: "Custom"
+                        md_bg_color: theme.WHITE
+                        line_color: theme.LINE
+                        radius: [23, 23, 23, 23]
+                        on_release: root.recenter_to_user()
+
+                        MDButtonIcon:
+                            icon: theme.ICON["recenter"]
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_800
+
+                        MDButtonText:
+                            text: "Re-center"
+                            bold: True
+                            theme_text_color: "Custom"
+                            text_color: theme.NAVY_800

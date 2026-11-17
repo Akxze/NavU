@@ -1,0 +1,243 @@
+#:kivy 2.0
+#:import theme navu.theme
+
+<CampusCard>:
+    campus_name: ""
+    subtitle: ""
+    image_source: ""
+    style: "elevated"
+    padding: 0
+    size_hint_y: None
+    height: "188dp"
+    theme_bg_color: "Custom"
+    md_bg_color: [0, 0, 0, 0]
+    elevation: 0
+    radius: [18, 18, 18, 18]
+
+    canvas.before:
+        PushMatrix
+        Scale:
+            x: root.zoom_scale * root.float_scale * root.press_scale * root.filter_scale
+            y: root.zoom_scale * root.float_scale * root.press_scale * root.filter_scale
+            z: 1
+            origin: root.center
+        Color:
+            rgba: theme.alpha(theme.NAVY_900, root.shadow_opacity * 0.035)
+        RoundedRectangle:
+            pos: root.x - dp(7) + root.shadow_offset_x, root.y - dp(9) + root.shadow_offset_y
+            size: root.width + dp(14), root.height + dp(14)
+            radius: [25, 25, 25, 25]
+        Color:
+            rgba: theme.alpha(theme.NAVY_900, root.shadow_opacity * 0.055)
+        RoundedRectangle:
+            pos: root.x - dp(4) + root.shadow_offset_x, root.y - dp(6) + root.shadow_offset_y
+            size: root.width + dp(8), root.height + dp(8)
+            radius: [22, 22, 22, 22]
+        Color:
+            rgba: theme.alpha(theme.NAVY_900, root.shadow_opacity * 0.08)
+        RoundedRectangle:
+            pos: root.x - dp(2) + root.shadow_offset_x, root.y - dp(3) + root.shadow_offset_y
+            size: root.width + dp(4), root.height + dp(4)
+            radius: [20, 20, 20, 20]
+        Color:
+            rgba: theme.GOLD_500
+        RoundedRectangle:
+            pos: root.x, root.y
+            size: root.size
+            radius: [19, 19, 19, 19]
+        Color:
+            rgba: theme.NAVY_800
+        RoundedRectangle:
+            pos: root.x + dp(1), root.y + dp(1)
+            size: root.width - dp(2), root.height - dp(2)
+            radius: [18, 18, 18, 18]
+    canvas.after:
+        PopMatrix
+
+    FloatLayout:
+        canvas.before:
+            StencilPush
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [18, 18, 18, 18]
+            StencilUse
+        canvas.after:
+            StencilUnUse
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [18, 18, 18, 18]
+            StencilPop
+
+        Image:
+            id: campus_banner
+            source: root.banner_source
+            fit_mode: "cover"
+            size_hint: 1, 1
+            opacity: 0
+
+        MDIcon:
+            icon: "school-outline"
+            theme_icon_color: "Custom"
+            icon_color: theme.GOLD_300
+            font_size: "60sp"
+            opacity: 0.55 if not root.image_loaded else 0
+            pos_hint: {"center_x": 0.5, "center_y": 0.53}
+
+        FloatLayout:
+            size_hint: None, None
+            size: "62dp", "62dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.58}
+
+            canvas.before:
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.32)
+                Ellipse:
+                    pos: self.x + dp(1), self.y - dp(2)
+                    size: self.size
+                Color:
+                    rgba: theme.alpha(theme.GOLD_300, 0.2)
+                Ellipse:
+                    pos: self.x - dp(2), self.y - dp(2)
+                    size: self.width + dp(4), self.height + dp(4)
+                Color:
+                    rgba: theme.alpha(theme.GOLD_300, 0.34)
+                Ellipse:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: theme.GOLD_500
+                Ellipse:
+                    pos: self.x + dp(3), self.y + dp(3)
+                    size: self.width - dp(6), self.height - dp(6)
+
+            Image:
+                id: campus_profile
+                source: root.profile_source
+                fit_mode: "cover"
+                size_hint: None, None
+                size: "52dp", "52dp"
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                canvas.before:
+                    StencilPush
+                    Ellipse:
+                        pos: self.pos
+                        size: self.size
+                    StencilUse
+                canvas.after:
+                    StencilUnUse
+                    Ellipse:
+                        pos: self.pos
+                        size: self.size
+                    StencilPop
+
+        FloatLayout:
+            size_hint: None, None
+            size: "40dp", "40dp"
+            pos_hint: {"right": 0.95, "top": 0.95}
+
+            canvas.before:
+                Color:
+                    rgba: theme.alpha(theme.GOLD_300, 0.28)
+                Ellipse:
+                    pos: self.x, self.y
+                    size: self.size
+                Color:
+                    rgba: theme.GOLD_500
+                Ellipse:
+                    pos: self.x + dp(3), self.y + dp(3)
+                    size: self.width - dp(6), self.height - dp(6)
+
+            MDCard:
+                size_hint: None, None
+                size: "32dp", "32dp"
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                radius: [16, 16, 16, 16]
+                elevation: 0
+                theme_bg_color: "Custom"
+                md_bg_color: theme.WHITE
+
+                Image:
+                    source: root.logo_source
+                    size_hint: None, None
+                    size: "26dp", "26dp"
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    fit_mode: "contain"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint: 1, None
+            height: "64dp"
+            spacing: "1dp"
+            padding: ["12dp", "4dp", "8dp", "5dp"]
+            pos_hint: {"x": 0, "y": 0}
+
+            canvas.before:
+                Color:
+                    rgba: theme.alpha(theme.NAVY_700, 0.08)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.875
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_800, 0.18)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.75
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_800, 0.3)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.625
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.44)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.5
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.58)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.375
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.7)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.25
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.82)
+                Rectangle:
+                    pos: self.x, self.y + self.height * 0.125
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.NAVY_900, 0.92)
+                Rectangle:
+                    pos: self.pos
+                    size: self.width, self.height * 0.125
+                Color:
+                    rgba: theme.alpha(theme.GOLD_500, 0.7)
+                Rectangle:
+                    pos: self.x, self.y
+                    size: self.width, dp(1)
+
+            MDLabel:
+                text: "NATIONAL UNIVERSITY"
+                font_style: "Label"
+                role: "small"
+                bold: True
+                theme_font_size: "Custom"
+                font_size: "9sp"
+                adaptive_height: True
+                theme_text_color: "Custom"
+                text_color: theme.WHITE
+
+            MDLabel:
+                text: root.campus_name
+                font_style: "Title"
+                role: "medium"
+                bold: True
+                theme_font_size: "Custom"
+                font_size: "16sp"
+                adaptive_height: True
+                theme_text_color: "Custom"
+                text_color: theme.GOLD_300

@@ -1,0 +1,122 @@
+#:kivy 2.0
+#:import theme navu.theme
+
+<HomeScreen>:
+    name: "home"
+    md_bg_color: theme.NAVY_900
+
+    canvas.before:
+        Color:
+            rgba: theme.NAVY_900
+        Rectangle:
+            pos: root.pos
+            size: root.size
+
+    Image:
+        id: hero_image
+        source: "assets/gui_assests/NU_moa.png"
+        fit_mode: "cover"
+        size_hint: 1, 1
+        pos_hint: {"x": 0, "y": 0}
+
+    VerticalGradientOverlay:
+        id: hero_shade
+        size_hint: 1, 1
+        pos_hint: {"x": 0, "y": 0}
+
+    MDLabel:
+        id: brand_label
+        text: "N A V U   |   I N D O O R   C A M P U S   G U I D E"
+        halign: "center"
+        font_style: "Label"
+        role: "large"
+        bold: True
+        font_size: "11sp"
+        size_hint: 0.9, None
+        height: "36dp"
+        pos_hint: {"center_x": 0.5, "top": 0.97}
+        theme_text_color: "Custom"
+        text_color: theme.GOLD_500
+
+    Widget:
+        id: brand_glow
+        size_hint: None, None
+        size: min(dp(324), root.width * 0.82), min(dp(324), root.width * 0.82)
+        pos_hint: {"center_x": 0.5, "center_y": 0.66}
+        canvas:
+            Color:
+                rgba: theme.alpha(theme.GOLD_300, 0.26)
+            Ellipse:
+                pos: self.pos
+                size: self.size
+            Color:
+                rgba: theme.alpha(theme.PAPER, 0.36)
+            Ellipse:
+                pos: (self.x + self.width * 0.08, self.y + self.height * 0.08)
+                size: (self.width * 0.84, self.height * 0.84)
+            Color:
+                rgba: theme.alpha(theme.PAPER, 0.98)
+            Ellipse:
+                pos: (self.x + self.width * 0.17, self.y + self.height * 0.17)
+                size: (self.width * 0.66, self.height * 0.66)
+
+    Image:
+        id: brand_mark
+        source: "assets/NAVU_LOGO.png"
+        fit_mode: "contain"
+        size_hint: 0.55, 0.29
+        pos_hint: {"center_x": 0.5, "center_y": 0.66}
+
+    MDLabel:
+        id: welcome_title
+        text: "Welcome to NAVU"
+        halign: "center"
+        valign: "middle"
+        size_hint: 0.94, None
+        height: "58dp"
+        pos_hint: {"center_x": 0.5, "center_y": 0.37}
+        font_style: "Headline"
+        role: "medium"
+        bold: True
+        theme_font_size: "Custom"
+        font_size: min(sp(30), root.width * 0.078)
+        theme_text_color: "Custom"
+        text_color: theme.WHITE
+
+    MDLabel:
+        id: welcome_subtitle
+        text: "Founded for Filipinos, built for the nation"
+        halign: "center"
+        valign: "middle"
+        size_hint: 0.88, None
+        height: "48dp"
+        pos_hint: {"center_x": 0.5, "center_y": 0.305}
+        font_style: "Body"
+        role: "medium"
+        theme_text_color: "Custom"
+        text_color: theme.WHITE
+
+    WelcomeStartButton:
+        id: start_button
+        size_hint: None, None
+        width: min(dp(330), root.width * 0.82)
+        height: "58dp"
+        theme_width: "Custom"
+        pos_hint: {"center_x": 0.5, "center_y": 0.09}
+        style: "filled"
+        theme_bg_color: "Custom"
+        md_bg_color: theme.GOLD_500
+        radius: [29, 29, 29, 29]
+        state_hover: 0
+        on_release: app.switch_screen("campus")
+
+        MDButtonIcon:
+            icon: "arrow-right"
+            theme_text_color: "Custom"
+            text_color: theme.NAVY_900
+
+        MDButtonText:
+            text: "GET STARTED"
+            bold: True
+            theme_text_color: "Custom"
+            text_color: theme.NAVY_900
